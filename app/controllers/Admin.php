@@ -175,27 +175,27 @@ class Admin extends Controller {
     }
 
     // ==========================================================
-    // --- ANALISIS & LOG (PERBAIKAN FILTER) ---
+    // --- ANALISIS & LOG ---
     // ==========================================================
 
     public function laporan() {
-        // Cek hak akses: Owner dan Admin biasanya bisa melihat laporan
-        if (strtolower($_SESSION['role']) === 'petugas') {
+        /** * PROTEKSI KETAT: Hanya Owner yang boleh mengakses laporan.
+         * Jika role user bukan 'owner', redirect ke dashboard index.
+         */
+        if (strtolower($_SESSION['role']) !== 'owner') {
             header('Location: ' . BASEURL . '/admin/index');
             exit;
         }
 
-        // PERBAIKAN: Jika form filter tidak diisi, jangan paksa ke hari ini
-        // Biarkan bernilai null agar Model menampilkan semua data
+        // Jika form filter tidak diisi, biarkan null agar Model menampilkan semua data
         $tgl_mulai = (!empty($_POST['tgl_mulai'])) ? $_POST['tgl_mulai'] : null;
         $tgl_selesai = (!empty($_POST['tgl_selesai'])) ? $_POST['tgl_selesai'] : null;
 
         $data['judul'] = 'Laporan Transaksi';
         
-        // Panggil model dengan parameter (bisa berupa tanggal atau null)
+        // Panggil model dengan parameter tanggal
         $data['riwayat'] = $this->model('Parkir_model')->getLaporanByDate($tgl_mulai, $tgl_selesai);
         
-        // Simpan input user untuk ditampilkan kembali di form input (UX)
         $data['tgl_mulai'] = $tgl_mulai;
         $data['tgl_selesai'] = $tgl_selesai;
 

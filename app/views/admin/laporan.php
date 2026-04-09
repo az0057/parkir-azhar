@@ -54,7 +54,7 @@
                         <td colspan="5" class="p-10 text-center text-slate-400 italic">
                             <div class="flex flex-col items-center gap-2">
                                 <span class="text-4xl">📁</span>
-                                <p>Data tidak ditemukan pada periode ini.</p>
+                                <p>Data tidak ditemukan.</p>
                             </div>
                         </td>
                     </tr>
@@ -62,31 +62,39 @@
                     <?php 
                     $grandTotal = 0;
                     foreach($data['riwayat'] as $r) : 
-                        $grandTotal += $r['biaya_total'];
+                        $grandTotal += ($r['biaya_total'] ?? 0);
+                        
+                        // PERBAIKAN: Pastikan plat_nomor diambil dari key yang benar
+                        // Jika di database kolomnya bernama 'plat', ubah di bawah ini
+                        $plat = !empty($r['plat_nomor']) ? $r['plat_nomor'] : 'TANPA PLAT';
+                        $jenis = strtolower($r['jenis_kendaraan'] ?? 'motor');
                     ?>
                     <tr class="hover:bg-slate-50 transition-colors">
-                        <td class="p-4 font-mono font-bold text-slate-700"><?= $r['plat_nomor']; ?></td>
                         <td class="p-4">
-                            <span class="px-2 py-1 rounded text-[10px] font-black uppercase tracking-tighter <?= $r['jenis_kendaraan'] == 'mobil' ? 'bg-indigo-100 text-indigo-700' : 'bg-orange-100 text-orange-700'; ?>">
-                                <?= ($r['jenis_kendaraan'] == 'mobil') ? '🚗 Mobil' : '🏍️ Motor'; ?>
+                            <span class="font-mono font-bold text-slate-700 bg-slate-100 px-2 py-1 rounded">
+                                <?= strtoupper($plat); ?>
+                            </span>
+                        </td>
+                        <td class="p-4">
+                            <span class="px-2 py-1 rounded text-[10px] font-black uppercase tracking-tighter <?= ($jenis == 'mobil') ? 'bg-indigo-100 text-indigo-700' : 'bg-orange-100 text-orange-700'; ?>">
+                                <?= ($jenis == 'mobil') ? '🚗 Mobil' : '🏍️ Motor'; ?>
                             </span>
                         </td>
                         <td class="p-4 text-sm text-slate-500">
-                            <div class="font-medium text-slate-700"><?= date('H:i', strtotime($r['waktu_masuk'])); ?></div>
-                            <div class="text-[10px]"><?= date('d M Y', strtotime($r['waktu_masuk'])); ?></div>
+                            <div class="font-medium text-slate-700"><?= isset($r['waktu_masuk']) ? date('H:i', strtotime($r['waktu_masuk'])) : '--:--'; ?></div>
+                            <div class="text-[10px]"><?= isset($r['waktu_masuk']) ? date('d M Y', strtotime($r['waktu_masuk'])) : '-'; ?></div>
                         </td>
                         <td class="p-4 text-sm text-slate-500">
-                            <div class="font-medium text-slate-700"><?= date('H:i', strtotime($r['waktu_keluar'])); ?></div>
-                            <div class="text-[10px]"><?= date('d M Y', strtotime($r['waktu_keluar'])); ?></div>
+                            <div class="font-medium text-slate-700"><?= isset($r['waktu_keluar']) ? date('H:i', strtotime($r['waktu_keluar'])) : '--:--'; ?></div>
+                            <div class="text-[10px]"><?= isset($r['waktu_keluar']) ? date('d M Y', strtotime($r['waktu_keluar'])) : '-'; ?></div>
                         </td>
                         <td class="p-4 text-right font-bold text-slate-800">
-                            Rp <?= number_format($r['biaya_total'], 0, ',', '.'); ?>
+                            Rp <?= number_format(($r['biaya_total'] ?? 0), 0, ',', '.'); ?>
                         </td>
                     </tr>
                     <?php endforeach; ?>
                 <?php endif; ?>
             </tbody>
-
             <?php if(!empty($data['riwayat'])) : ?>
             <tfoot class="bg-slate-50 font-bold border-t-2 border-slate-200">
                 <tr>
@@ -103,48 +111,12 @@
 
 <style>
     @media print {
-        /* Sembunyikan elemen navigasi dan tombol */
-        .no-print, form, button, a, header, .sidebar {
-            display: none !important;
-        }
-        
-        /* Reset layout body */
-        body {
-            background-color: white !important;
-            color: black !important;
-            padding: 0;
-            margin: 0;
-        }
-
-        /* Hilangkan bayangan dan border melengkung agar bersih di kertas */
-        .shadow-sm, .rounded-2xl {
-            box-shadow: none !important;
-            border: 1px solid #e2e8f0 !important;
-            border-radius: 0 !important;
-        }
-
-        /* Pastikan tabel mengambil lebar penuh kertas */
-        .printable-area {
-            width: 100% !important;
-        }
-
-        table {
-            border-collapse: collapse !important;
-            width: 100% !important;
-        }
-
-        th, td {
-            border: 1px solid #e2e8f0 !important;
-        }
-
-        /* Tambahkan judul laporan di bagian atas saat cetak */
+        .no-print { display: none !important; }
+        body { background-color: white !important; padding: 0 !important; }
+        .printable-area { width: 100% !important; border: 1px solid black !important; border-radius: 0 !important; }
         .printable-area::before {
-            content: "LAPORAN RIWAYAT PARKIR - SISTEM AZHAR";
-            display: block;
-            text-align: center;
-            font-weight: bold;
-            font-size: 1.5rem;
-            margin-bottom: 20px;
+            content: "LAPORAN RIWAYAT PARKIR - SISTEM (AZHAR)";
+            display: block; text-align: center; font-weight: bold; font-size: 1.2rem; margin-bottom: 20px;
         }
     }
 </style>

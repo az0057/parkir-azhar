@@ -35,11 +35,11 @@
             <?php if (isset($_SESSION['role']) && strtolower($_SESSION['role']) == 'admin') : ?>
                 <p class="text-[10px] font-bold text-slate-400 px-4 mt-8 mb-2 uppercase tracking-widest">Administrator</p>
                 
-                <a href="<?= BASEURL; ?>/admin" class="flex items-center px-4 py-3 rounded-xl hover:bg-slate-50 transition-all group <?= ($data['judul'] == 'Dashboard Admin') ? 'sidebar-active' : ''; ?>">
+                <a href="<?= BASEURL; ?>/admin" class="flex items-center px-4 py-3 rounded-xl hover:bg-slate-50 transition-all group <?= ($data['judul'] == 'Dashboard Utama') ? 'sidebar-active' : ''; ?>">
                     <span class="text-sm">Dashboard Utama</span>
                 </a>
                 
-                <a href="<?= BASEURL; ?>/admin/user" class="flex items-center px-4 py-3 rounded-xl hover:bg-slate-50 transition-all <?= ($data['judul'] == 'Kelola User') ? 'sidebar-active' : ''; ?>">
+                <a href="<?= BASEURL; ?>/admin/user" class="flex items-center px-4 py-3 rounded-xl hover:bg-slate-50 transition-all <?= ($data['judul'] == 'Kelola Pengguna') ? 'sidebar-active' : ''; ?>">
                     <span class="text-sm">Kelola Pengguna</span>
                 </a>
 
@@ -53,11 +53,11 @@
                     <span class="text-sm">Manajemen Tarif</span>
                 </a>
                 
-                <a href="<?= BASEURL; ?>/admin/area" class="flex items-center px-4 py-3 rounded-xl hover:bg-slate-50 transition-all <?= ($data['judul'] == 'Manajemen Area') ? 'sidebar-active' : ''; ?>">
+                <a href="<?= BASEURL; ?>/admin/area" class="flex items-center px-4 py-3 rounded-xl hover:bg-slate-50 transition-all <?= ($data['judul'] == 'Area & Slot Parkir') ? 'sidebar-active' : ''; ?>">
                     <span class="text-sm">Area & Slot Parkir</span>
                 </a>
 
-                <a href="<?= BASEURL; ?>/admin/log" class="flex items-center px-4 py-3 rounded-xl hover:bg-slate-50 transition-all <?= ($data['judul'] == 'Log Aktivitas Sistem') ? 'sidebar-active' : ''; ?>">
+                <a href="<?= BASEURL; ?>/admin/log" class="flex items-center px-4 py-3 rounded-xl hover:bg-slate-50 transition-all <?= ($data['judul'] == 'Log Aktivitas') ? 'sidebar-active' : ''; ?>">
                     <span class="text-sm">Log Aktivitas</span>
                 </a>
             <?php endif; ?>
@@ -69,10 +69,10 @@
                 </a>
             <?php endif; ?>
 
-            <?php if (isset($_SESSION['role']) && (strtolower($_SESSION['role']) == 'owner' || strtolower($_SESSION['role']) == 'admin')) : ?>
-                <p class="text-[10px] font-bold text-slate-400 px-4 mt-6 mb-2 uppercase tracking-widest">Analisis</p>
-                <a href="<?= BASEURL; ?>/admin/laporan" class="flex items-center px-4 py-3 rounded-xl hover:bg-slate-50 transition-all <?= ($data['judul'] == 'Laporan Transaksi' || $data['judul'] == 'Laporan Riwayat Parkir') ? 'sidebar-active' : ''; ?>">
-                    <span class="text-sm text-slate-600">Laporan Transaksi</span>
+            <?php if (isset($_SESSION['role']) && strtolower($_SESSION['role']) == 'owner') : ?>
+                <p class="text-[10px] font-bold text-slate-400 px-4 mt-8 mb-2 uppercase tracking-widest">Analisis</p>
+                <a href="<?= BASEURL; ?>/admin/laporan" class="flex items-center px-4 py-3 rounded-xl hover:bg-slate-50 transition-all <?= ($data['judul'] == 'Laporan Transaksi') ? 'sidebar-active' : ''; ?>">
+                    <span class="text-sm">Laporan Transaksi</span>
                 </a>
             <?php endif; ?>
 
